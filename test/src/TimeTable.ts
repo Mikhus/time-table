@@ -26,16 +26,4 @@ describe('TimeTable', () => {
         expect(typeof (TimeTable.prototype as any).describe)
             .equals('function');
     });
-
-    // implement tests for your service methods here...
-    // test below is just an example, remove it when it is not required anymore
-    describe('hello()', () => {
-        const service = new TimeTable();
-        it('should be a function', () => {
-            expect(typeof service.hello).equals('function');
-        });
-        it('should return "Hello!" string', () => {
-            expect(service.hello()).equals('Hello!');
-        });
-    });
 });

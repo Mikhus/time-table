@@ -23,17 +23,22 @@ import {
 } from '@imqueue/rpc';
 
 export class TimeTable extends IMQService {
-    // Implement your service methods here, example:
-    /**
-     * Returns "Hello!" string.
-     * This method is just an example of implementation. Please, remove it
-     * and write your service methods instead.
-     * 
-     * @return {string}
-     */
+
     @profile()
     @expose()
-    public hello(): string {
-        return "Hello!";
+    public async list() {
+
+    }
+
+    @profile()
+    @expose()
+    public async reserve() {
+
+    }
+
+    @profile()
+    @expose()
+    public async release() {
+
     }
 }
