@@ -48,10 +48,24 @@ export class TimeTableOptions {
      * @type {{ [name: string]: number }}
      */
     @property('{ [name: string]: number }')
-    public patterns: { [name: string]: number } = {
+    public baseTime: { [name: string]: number } = {
         fast: 30,
-        standard: 45,
-        full: 60
+        std: 45,
+        full: 60,
+    };
+
+    /**
+     * Time additions for different factor types
+     *
+     * @type {{ [appendType: string]: { [key: string]: number } }}
+     */
+    @property('{ [appendType: string]: { [key: string]: number } }')
+    public appendTime: { [appendType: string]: { [key: string]: number } } = {
+        carType: {
+            mini: -5,
+            midsize: 0,
+            large: 15,
+        },
     };
 
     /**

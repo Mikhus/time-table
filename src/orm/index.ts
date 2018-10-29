@@ -15,31 +15,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-import { property } from '@imqueue/rpc';
-
-export class Reservation {
-    /**
-     * Reservation start time
-     *
-     * @type {string}
-     */
-    @property('string')
-    public dateTime: string;
-
-    /**
-     * Washing type (one from a list of available patterns
-     *
-     * @type {string}
-     */
-    @property('string')
-    public type: string;
-
-
-    /**
-     * Reservation duration in minutes
-     *
-     * @type {number}
-     */
-    @property('number')
-    public duration: number;
-}
+export * from './init';
+export * from './connection';
+export * from './BaseModel';
+export * from './models/Reservation';

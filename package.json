@@ -41,7 +41,10 @@
     "@types/moment-timezone": "^0.5.9",
     "dotenv": "^6.1.0",
     "moment": "^2.22.2",
-    "moment-timezone": "^0.5.21"
+    "moment-timezone": "^0.5.21",
+    "pg": "^7.6.0",
+    "sequelize": "^4.41.0",
+    "sequelize-typescript": "^0.6.6"
   },
   "devDependencies": {
     "@types/chai": "^4.1.6",

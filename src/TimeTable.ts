@@ -21,8 +21,11 @@ import {
     profile,
 } from '@imqueue/rpc';
 import { Reservation, TimeTableOptions } from '.';
+import { initModels } from './orm';
 
 export class TimeTable extends IMQService {
+
+    private orm = initModels();
 
     /**
      * Returns a list of reservations starting from a given time (or from
