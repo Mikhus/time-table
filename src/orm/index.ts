@@ -36,6 +36,7 @@ export * from './BaseModel';
 export * from './models/Reservation';
 
 const JS_EXT_RX = /\.js$/;
+const logger = config.logger || console;
 
 /**
  * Parses given database connection string into a SequelizeConfig
@@ -112,7 +113,7 @@ export function initModels(logging?: boolean): Sequelize {
                 .replace(JS_EXT_RX, '')
             ]));
 
-    (config.logger || console).log('Database models initialized...');
+    logger.log('Database models initialized...');
 
     return orm;
 }
