@@ -15,16 +15,17 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-import {
-    IMQService,
-    expose,
-    profile,
-} from '@imqueue/rpc';
+import { IMQService, expose, profile } from '@imqueue/rpc';
 import { Reservation, TimeTableOptions } from '.';
 import { initModels } from './orm';
 
 export class TimeTable extends IMQService {
 
+    /**
+     * ORM database driver associated with the service
+     *
+     * @type {Sequelize}
+     */
     private orm = initModels();
 
     /**
