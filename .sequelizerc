@@ -1,7 +1,7 @@
 const resolve = require('path').resolve;
 
 module.exports = {
-    'config': resolve(__dirname, 'config.js'),
-    'migrations-path': resolve(__dirname, 'orm/migrations'),
-    'models-path': resolve(__dirname, 'orm/models')
+    'config': resolve(__dirname, 'src/orm/config.js'),
+    'migrations-path': resolve(__dirname, 'src/orm/migrations'),
+    'models-path': resolve(__dirname, 'src/orm/models'),
 };

@@ -30,13 +30,13 @@ import {
     DEFAULT_DB_HOST,
     DEFAULT_DB_PORT,
 } from '../../config';
-import { dbConfig } from '../../config';
+import { dbConfig, serviceOptions } from '../../config';
 
 export * from './BaseModel';
 export * from './models/Reservation';
 
 const JS_EXT_RX = /\.js$/;
-const logger = config.logger || console;
+const logger = serviceOptions.logger || console;
 
 /**
  * Parses given database connection string into a SequelizeConfig

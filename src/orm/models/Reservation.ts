@@ -51,20 +51,15 @@ export class Reservation extends BaseModel<Reservation> {
     @Column(DataType.STRING(32))
     public userId: string;
 
-    @property('string')
+    @property("'fast' | 'std' | 'full'")
     @AllowNull(false)
     @Column(DataType.ENUM({ values: ['fast', 'std', 'full'] }))
-    public type: string;
+    public type: 'fast' | 'std' | 'full';
 
-    @property('string')
+    @property('[string, string]')
     @AllowNull(false)
-    @Column(DataType.DATE)
-    public startDime: Date;
-
-    @property('number')
-    @AllowNull(false)
-    @Column(DataType.TINYINT)
-    public duration: number;
+    @Column(DataType.RANGE(DataType.DATE))
+    public duration: [Date, Date];
 
     @CreatedAt
     public createdAt: Date;
