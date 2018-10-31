@@ -32,10 +32,16 @@ export async function up(migration: QueryInterface) {
 
     db.define('Reservation', {}, {
         indexes: [{
-            fields: ['carId', 'userId']
+            fields: ['carId', 'userId'],
         }, {
             fields: ['duration'],
             using: 'gist',
+        }, {
+            fields: ['createdAt'],
+        }, {
+            fields: ['updatedAt'],
+        }, {
+            fields: ['deletedAt'],
         }],
         freezeTableName: true,
         tableName: 'Reservation'
