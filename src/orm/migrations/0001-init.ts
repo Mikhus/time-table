@@ -29,24 +29,17 @@ export async function up(migration: QueryInterface) {
     const db = initModels();
 
     await db.sync();
-
     db.define('Reservation', {}, {
-        indexes: [{
-            fields: ['carId', 'userId'],
-        }, {
-            fields: ['duration'],
-            using: 'gist',
-        }, {
-            fields: ['createdAt'],
-        }, {
-            fields: ['updatedAt'],
-        }, {
-            fields: ['deletedAt'],
-        }],
+        indexes: [
+            { fields: ['carId', 'userId'] },
+            { fields: ['duration'], using: 'gist' },
+            { fields: ['createdAt'] },
+            { fields: ['updatedAt'] },
+            { fields: ['deletedAt'] },
+        ],
         freezeTableName: true,
-        tableName: 'Reservation'
+        tableName: 'Reservation',
     });
-
     await db.sync();
 }
 
