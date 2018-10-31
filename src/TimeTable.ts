@@ -17,8 +17,7 @@
  */
 import { IMQService, expose, profile } from '@imqueue/rpc';
 import { Reservation, TimeTableOptions } from '.';
-import { initModels } from './orm';
-
+import { BackStorage } from './lib';
 export class TimeTable extends IMQService {
 
     /**
@@ -26,7 +25,7 @@ export class TimeTable extends IMQService {
      *
      * @type {Sequelize}
      */
-    private orm = initModels();
+    private storage: BackStorage = new BackStorage();
 
     /**
      * Returns a list of reservations starting from a given time (or from
@@ -47,12 +46,13 @@ export class TimeTable extends IMQService {
      * if action is not possible
      *
      * @param {Reservation} reservation
-     * @return {Promise<void>}
+     * @return {Promise<boolean>}
      */
     @profile()
     @expose()
-    public async reserve(reservation: Reservation): Promise<void> {
+    public async reserve(reservation: Reservation): Promise<boolean> {
         // TODO: implement
+        return true;
     }
 
     /**
