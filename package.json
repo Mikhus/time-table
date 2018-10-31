@@ -12,7 +12,7 @@
     "test": "npm run build && npm run mocha && npm run show:test",
     "clean:dts": "find . -name '*.d.ts' -not -wholename '*node_modules*' -type f -delete",
     "clean:map": "find . -name '*.js.map' -not -wholename '*node_modules*' -type f -delete",
-    "clean:js": "find . -name '*.js' -not -wholename '*node_modules*' -type f -delete",
+    "clean:js": "find . -name '*.js' -not -wholename '*node_modules*' -not -wholename '*/orm/config.js' -type f -delete",
     "clean:test": "rm -rf .nyc_output coverage",
     "clean:doc": "rm -rf docs",
     "clean": "npm run clean:test && npm run clean:dts && npm run clean:map && npm run clean:js && npm run clean:doc",
