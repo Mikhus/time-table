@@ -17,6 +17,32 @@
  */
 import { property } from '@imqueue/rpc';
 
+export class BaseTimeOption {
+    /**
+     * Time option key
+     *
+     * @type {string}
+     */
+    @property('string')
+    public key: string;
+
+    /**
+     * Time options title
+     *
+     * @type {string}
+     */
+    @property('string')
+    public title: string;
+
+    /**
+     * Time duration in minutes
+     *
+     * @type {number}
+     */
+    @property('number')
+    public duration: number;
+}
+
 export class TimeTableOptions {
     /**
      * Start working time in minutes (relatively to the day start time)
@@ -43,28 +69,24 @@ export class TimeTableOptions {
     public boxes: 4;
 
     /**
-     * Car washing patterns and their durations in minutes
+     * Base washing type configuration options
      *
-     * @type {{ [name: string]: number }}
+     * @type {BaseTimeOption[]}
      */
-    @property('{ [name: string]: { title: string, duration: number } }')
-    public baseTime: { [name: string]: { title: string, duration: number } } = {
-        fast: { title: 'Fast washing', duration: 30 },
-        std: { title: 'Standard washing', duration: 45 },
-        full: { title: 'Full complex washing', duration: 60 },
-    };
+    @property('BaseTimeOption[]')
+    public baseTime: BaseTimeOption[] = [
+        { key: 'fast', title: 'Fast washing', duration: 30 },
+        { key: 'std', title: 'Standard washing', duration: 45 },
+        { key: 'full', title: 'Full complex washing', duration: 60 },
+    ];
 
-    /**
-     * Time additions for different factor types
-     *
-     * @type {{ [appendType: string]: { [key: string]: number } }}
-     */
-    @property('{ [appendType: string]: { [key: string]: number } }')
-    public appendTime: { [appendType: string]: { [key: string]: number } } = {
-        carType: {
-            mini: -5,
-            midsize: 0,
-            large: 15,
-        },
-    };
+    private baseTimeHash: { [key: string]: number };
+
+    constructor() {
+        this.baseTimeHash = this.baseTime.reduce(
+            (hash: any, item: BaseTimeOption) => {
+                hash[item.key] = item.duration;
+                return hash;
+            }, {});
+    }
 }
