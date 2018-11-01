@@ -23,16 +23,16 @@ export class TimeTableOptions {
      *
      * @type {number}
      */
-    @property('number')
-    public start: number = 0;
+    @property('string')
+    public start: string = '08:00';
 
     /**
      * End working time in minutes (relatively to the day end time)
      *
      * @type {number}
      */
-    @property('number')
-    public end: number = 1440;
+    @property('string')
+    public end: string = '21:00';
 
     /**
      * Max allowed reservations per customer per day
@@ -40,18 +40,18 @@ export class TimeTableOptions {
      * @type {number}
      */
     @property('number')
-    public maxReservations: 2;
+    public boxes: 4;
 
     /**
      * Car washing patterns and their durations in minutes
      *
      * @type {{ [name: string]: number }}
      */
-    @property('{ [name: string]: number }')
-    public baseTime: { [name: string]: number } = {
-        fast: 30,
-        std: 45,
-        full: 60,
+    @property('{ [name: string]: { title: string, duration: number } }')
+    public baseTime: { [name: string]: { title: string, duration: number } } = {
+        fast: { title: 'Fast washing', duration: 30 },
+        std: { title: 'Standard washing', duration: 45 },
+        full: { title: 'Full complex washing', duration: 60 },
     };
 
     /**
@@ -67,12 +67,4 @@ export class TimeTableOptions {
             large: 15,
         },
     };
-
-    /**
-     * Time zone for reservation time-table
-     *
-     * @type {string}
-     */
-    @property('string')
-    public timezone: string = 'Europe/Kiev';
 }
