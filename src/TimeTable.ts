@@ -94,6 +94,9 @@ export class TimeTable extends IMQService {
     @profile()
     @expose()
     public async config(): Promise<TimeTableOptions> {
-        return new TimeTableOptions();
+        const options = new TimeTableOptions();
+        delete (options as any).baseTimeHash;
+
+        return options;
     }
 }
