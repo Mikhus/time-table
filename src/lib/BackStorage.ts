@@ -58,6 +58,11 @@ export class BackStorage {
     }
 
     @profile()
+    public async findById(id: string, fields?: string[]) {
+        return await Reservation.findById(id, { attributes: fields });
+    }
+
+    @profile()
     public async add() {
 
     }

@@ -48,6 +48,22 @@ export class TimeTable extends IMQService {
     }
 
     /**
+     * Fetches and returns single reservation record by its identifier
+     *
+     * @param {string} id
+     * @param {string[]} [fields]
+     * @return {Promise<Reservation | null>}
+     */
+    @profile()
+    @expose()
+    public async fetch(
+        id: string,
+        fields?: string[],
+    ): Promise<Partial<Reservation> | null> {
+        return await this.storage.findById(id, fields);
+    }
+
+    /**
      * Makes a given reservation or throws a proper error
      * if action is not possible
      *
