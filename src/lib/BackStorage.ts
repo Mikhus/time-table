@@ -18,8 +18,11 @@
 import { profile } from '@imqueue/rpc';
 import { createHandyClient, IHandyRedis } from 'handy-redis';
 import { Sequelize } from 'sequelize-typescript';
-import { initModels } from '../orm';
+import { initModels, Reservation } from '../orm';
 import { REDIS_STORE_HOST, REDIS_STORE_PORT } from '../../config';
+import { today, tomorrow } from '../lib';
+
+const Op = Sequelize.Op;
 
 export class BackStorage {
     private redis: IHandyRedis;
@@ -34,13 +37,24 @@ export class BackStorage {
     }
 
     @profile()
-    public async init() {
+    public async init(date = new Date()) {
+        const list = await this.list(date);
+        // TODO: put data into redis store
 
     }
 
     @profile()
-    public async list() {
-
+    public async list(
+        date = new Date(),
+        fields?: string[],
+    ): Promise<Reservation[]> {
+        return await Reservation.findAll({
+            where: { [Op.and]: [
+                { duration: { [Op.contained]: [today(date), tomorrow(date)] } },
+                { deletedAt: null },
+            ]},
+            attributes: fields,
+        });
     }
 
     @profile()

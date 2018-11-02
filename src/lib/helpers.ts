@@ -15,5 +15,36 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-export * from './BackStorage';
-export * from './helpers';
+
+/**
+ * Returns start time of a given data treating the given date as "today",
+ * if date is not given will use real today date
+ *
+ * @param {Date} date
+ * @return {Date}
+ */
+export function today(date = new Date()) {
+    return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        0, 0, 0, 0,
+    );
+}
+
+/**
+ * Returns "tomorrow" value for a given date which is start time of the
+ * date after the given date. If date is not given will return real
+ * tomorrow start time value
+ *
+ * @param {Date} date
+ * @return {Date}
+ */
+export function tomorrow(date = new Date()) {
+    return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate() + 1,
+        0, 0, 0, 0,
+    );
+}

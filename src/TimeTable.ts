@@ -31,14 +31,20 @@ export class TimeTable extends IMQService {
      * Returns a list of reservations starting from a given time (or from
      * current time if omitted)
      *
-     * @param {string} startFrom
+     * @param {string} [startFrom]
+     * @param {string[]} [fields]
      * @return {Promise<Reservation[]>}
      */
     @profile()
     @expose()
-    public async list(startFrom?: string): Promise<Reservation[]> {
-        // TODO: implement
-        return [];
+    public async list(
+        startFrom?: string,
+        fields?: string[]
+    ): Promise<Reservation[]> {
+        return await this.storage.list(
+            startFrom ? new Date(startFrom) : new Date(),
+            fields,
+        );
     }
 
     /**
