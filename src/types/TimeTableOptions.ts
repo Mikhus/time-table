@@ -66,7 +66,7 @@ export class TimeTableOptions {
      * @type {number}
      */
     @property('number')
-    public boxes: 4;
+    public boxes: number = 4;
 
     /**
      * Base washing type configuration options
