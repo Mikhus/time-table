@@ -59,7 +59,7 @@ export class BackStorage {
 
     @profile()
     public async findById(id: string, fields?: string[]) {
-        return await Reservation.findByPk(id, { attributes: fields });
+        return await Reservation.findById(id, { attributes: fields });
     }
 
     @profile()

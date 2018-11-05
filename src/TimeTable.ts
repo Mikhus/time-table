@@ -123,7 +123,6 @@ export class TimeTable extends IMQService {
     @expose()
     public async config(): Promise<TimeTableOptions> {
         const options = new TimeTableOptions();
-        console.log(options);
         delete (options as any).baseTimeHash;
 
         return options;
