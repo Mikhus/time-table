@@ -76,11 +76,11 @@ export class TimeTable extends IMQService {
      * if action is not possible
      *
      * @param {Reservation} reservation
-     * @return {Promise<Reservation>}
+     * @return {Promise<Reservation[]>}
      */
     @profile()
     @expose()
-    public async reserve(reservation: Reservation): Promise<Reservation> {
+    public async reserve(reservation: Reservation): Promise<Reservation[]> {
         const { carId, userId, type } = reservation;
         const duration: [Date, Date] = [
             moment.parseZone(reservation.duration[0]).toDate(),

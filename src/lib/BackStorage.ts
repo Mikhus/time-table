@@ -68,7 +68,8 @@ export class BackStorage {
         userId: string,
         type: 'std' | 'full' | 'fast',
         duration: [Date, Date],
-    ):Promise<Reservation> {
+        fields?: string[],
+    ):Promise<Reservation[]> {
         const reservation = new Reservation({
             carId,
             userId,
@@ -78,7 +79,7 @@ export class BackStorage {
 
         await reservation.save();
 
-        return await reservation.reload();
+        return this.list(duration[0], fields);
     }
 
     @profile()
