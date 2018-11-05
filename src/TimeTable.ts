@@ -15,9 +15,10 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-import { IMQService, expose, profile } from '@imqueue/rpc';
+import { IMQService, expose, profile, IMQServiceOptions } from '@imqueue/rpc';
 import { Reservation, TimeTableOptions } from '.';
 import { BackStorage } from './lib';
+
 export class TimeTable extends IMQService {
 
     /**
@@ -25,7 +26,12 @@ export class TimeTable extends IMQService {
      *
      * @type {Sequelize}
      */
-    private storage: BackStorage = new BackStorage();
+    private storage: BackStorage;
+
+    public constructor(options?: Partial<IMQServiceOptions>, name?: string) {
+        super(options, name);
+        this.storage = new BackStorage(this.logger);
+    }
 
     /**
      * Returns a list of reservations starting from a given time (or from
@@ -117,6 +123,7 @@ export class TimeTable extends IMQService {
     @expose()
     public async config(): Promise<TimeTableOptions> {
         const options = new TimeTableOptions();
+        console.log(options);
         delete (options as any).baseTimeHash;
 
         return options;

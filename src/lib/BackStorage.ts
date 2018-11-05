@@ -15,7 +15,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-import { profile } from '@imqueue/rpc';
+import { profile, ILogger } from '@imqueue/rpc';
 import { createHandyClient, IHandyRedis } from 'handy-redis';
 import { Sequelize } from 'sequelize-typescript';
 import { initModels, Reservation } from '../orm';
@@ -28,7 +28,7 @@ export class BackStorage {
     private redis: IHandyRedis;
     private orm: Sequelize;
 
-    public constructor() {
+    public constructor(public logger: ILogger) {
         this.orm = initModels();
         this.redis = createHandyClient(
             REDIS_STORE_PORT,
@@ -59,7 +59,7 @@ export class BackStorage {
 
     @profile()
     public async findById(id: string, fields?: string[]) {
-        return await Reservation.findById(id, { attributes: fields });
+        return await Reservation.findByPk(id, { attributes: fields });
     }
 
     @profile()
