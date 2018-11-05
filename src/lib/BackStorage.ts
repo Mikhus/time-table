@@ -63,8 +63,22 @@ export class BackStorage {
     }
 
     @profile()
-    public async add() {
+    public async add(
+        carId: string,
+        userId: string,
+        type: 'std' | 'full' | 'fast',
+        duration: [Date, Date],
+    ):Promise<Reservation> {
+        const reservation = new Reservation({
+            carId,
+            userId,
+            type,
+            duration,
+        } as Reservation);
 
+        await reservation.save();
+
+        return await reservation.reload();
     }
 
     @profile()

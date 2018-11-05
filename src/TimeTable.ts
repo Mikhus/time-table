@@ -16,6 +16,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 import { IMQService, expose, profile, IMQServiceOptions } from '@imqueue/rpc';
+import * as moment from 'moment';
+import 'moment-timezone';
 import { Reservation, TimeTableOptions } from '.';
 import { BackStorage } from './lib';
 
@@ -74,13 +76,18 @@ export class TimeTable extends IMQService {
      * if action is not possible
      *
      * @param {Reservation} reservation
-     * @return {Promise<boolean>}
+     * @return {Promise<Reservation>}
      */
     @profile()
     @expose()
-    public async reserve(reservation: Reservation): Promise<boolean> {
-        // TODO: implement
-        return true;
+    public async reserve(reservation: Reservation): Promise<Reservation> {
+        const { carId, userId, type } = reservation;
+        const duration: [Date, Date] = [
+            moment.parseZone(reservation.duration[0]).toDate(),
+            moment.parseZone(reservation.duration[1]).toDate(),
+        ];
+
+        return this.storage.add(carId, userId, type, duration);
     }
 
     /**
