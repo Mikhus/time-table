@@ -25,11 +25,6 @@ export const serviceOptions: Partial<IMQServiceOptions> = {
     logger: console,
 };
 
-export const REDIS_STORE_HOST: string =
-    process.env['REDIS_STORE_HOST'] || 'localhost';
-export const REDIS_STORE_PORT: number =
-    (process.env['REDIS_STORE_PORT'] as any | 0) || 6379;
-
 export const DEFAULT_DB_USER = 'tutmq';
 export const DEFAULT_DB_PASS = 'tutmq';
 export const DEFAULT_DB_NAME = 'tutmq';
