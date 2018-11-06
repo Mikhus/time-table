@@ -18,21 +18,22 @@
 import { IMQService, expose, profile, IMQServiceOptions } from '@imqueue/rpc';
 import * as moment from 'moment';
 import 'moment-timezone';
-import { Reservation, TimeTableOptions } from '.';
-import { BackStorage } from './lib';
+import { Sequelize } from 'sequelize-typescript';
+import { Reservation, TimeTableOptions, initModels } from '.';
+import { today, tomorrow } from './lib';
+
+const Op = Sequelize.Op;
 
 export class TimeTable extends IMQService {
 
     /**
-     * ORM database driver associated with the service
-     *
-     * @type {Sequelize}
+     * @constructor
+     * @param {Partial<IMQServiceOptions>} options
+     * @param {string} name
      */
-    private storage: BackStorage;
-
     public constructor(options?: Partial<IMQServiceOptions>, name?: string) {
         super(options, name);
-        this.storage = new BackStorage(this.logger);
+        initModels();
     }
 
     /**
@@ -49,10 +50,18 @@ export class TimeTable extends IMQService {
         date?: string,
         fields?: string[]
     ): Promise<Reservation[]> {
-        return await this.storage.list(
-            date ? new Date(date) : new Date(),
-            fields,
-        );
+        const dateObj = date ? new Date(date) : new Date();
+
+        return await Reservation.findAll({
+            where: { [Op.and]: [
+                { duration: { [Op.contained]: [
+                    today(dateObj),
+                    tomorrow(dateObj),
+                ]}},
+                { deletedAt: null },
+            ]},
+            attributes: fields,
+        });
     }
 
     /**
@@ -68,7 +77,7 @@ export class TimeTable extends IMQService {
         id: string,
         fields?: string[],
     ): Promise<Partial<Reservation> | null> {
-        return await this.storage.findById(id, fields);
+        return await Reservation.findById(id, { attributes: fields });
     }
 
     /**
@@ -91,13 +100,26 @@ export class TimeTable extends IMQService {
             moment.parseZone(reservation.duration[1]).toDate(),
         ];
 
-        return await this.storage.add(
-            carId,
-            userId,
-            type,
-            duration,
-            fields,
-        );
+        try {
+            const reservation = new Reservation({
+                carId,
+                userId,
+                type,
+                duration,
+                reserveDate: moment(duration[0]).format('YYYY-MM-DD'),
+            } as Reservation);
+
+            await reservation.save();
+
+            return await this.list(duration[0].toISOString(), fields);
+        } catch (err) {
+            if (err.original && err.original.code === '23505') {
+                throw new Error('Time for given car has been already ' +
+                    'reserved at this date!');
+            }
+
+            throw err;
+        }
     }
 
     /**
@@ -110,7 +132,18 @@ export class TimeTable extends IMQService {
     @profile()
     @expose()
     public async cancel(id: string, fields?: string[]): Promise<Reservation[]> {
-        return await this.storage.remove(id, fields);
+        const reservation = await this.fetch(id);
+
+        if (!reservation) {
+            throw new Error('No such reservation found!');
+        }
+
+        await Reservation.destroy({ where: { id } });
+
+        return this.list(
+            (reservation.duration as [Date, Date])[0].toISOString(),
+            fields,
+        );
     }
 
     /**
