@@ -39,18 +39,18 @@ export class TimeTable extends IMQService {
      * Returns a list of reservations starting from a given time (or from
      * current time if omitted)
      *
-     * @param {string} [startFrom]
-     * @param {string[]} [fields]
-     * @return {Promise<Reservation[]>}
+     * @param {string} [date] - date to select reservations for, if not passed current date is used
+     * @param {string[]} [fields] - fields to select for reservations data list
+     * @return {Promise<Reservation[]>} - list of found reservations
      */
     @profile()
     @expose()
     public async list(
-        startFrom?: string,
+        date?: string,
         fields?: string[]
     ): Promise<Reservation[]> {
         return await this.storage.list(
-            startFrom ? new Date(startFrom) : new Date(),
+            date ? new Date(date) : new Date(),
             fields,
         );
     }
@@ -58,9 +58,9 @@ export class TimeTable extends IMQService {
     /**
      * Fetches and returns single reservation record by its identifier
      *
-     * @param {string} id
-     * @param {string[]} [fields]
-     * @return {Promise<Reservation | null>}
+     * @param {string} id - reservation identifier to fetch
+     * @param {string[]} [fields] - fields to select for reservation data object
+     * @return {Promise<Reservation | null>} - reservation data object or null if not found
      */
     @profile()
     @expose()
@@ -116,7 +116,7 @@ export class TimeTable extends IMQService {
     /**
      * Returns reservation time-table configuration settings
      *
-     * @return {Promise<TimeTableOptions>}
+     * @return {Promise<TimeTableOptions>} - reservations time-table options
      */
     @profile()
     @expose()
