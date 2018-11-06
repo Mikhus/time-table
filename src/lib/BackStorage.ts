@@ -71,17 +71,26 @@ export class BackStorage {
         duration: [Date, Date],
         fields?: string[],
     ):Promise<Reservation[]> {
-        const reservation = new Reservation({
-            carId,
-            userId,
-            type,
-            duration,
-            reserveDate: moment(duration[0]).format('YYYY-MM-DD'),
-        } as Reservation);
+        try {
+            const reservation = new Reservation({
+                carId,
+                userId,
+                type,
+                duration,
+                reserveDate: moment(duration[0]).format('YYYY-MM-DD'),
+            } as Reservation);
 
-        await reservation.save();
+            await reservation.save();
 
-        return this.list(duration[0], fields);
+            return await this.list(duration[0], fields);
+        } catch (err) {
+            if (err.original && err.original.code === '23505') {
+                throw new Error('Time for given car has been already ' +
+                    'reserved at this date!');
+            }
+
+            throw err;
+        }
     }
 
     @profile()

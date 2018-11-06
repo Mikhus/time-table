@@ -91,7 +91,13 @@ export class TimeTable extends IMQService {
             moment.parseZone(reservation.duration[1]).toDate(),
         ];
 
-        return this.storage.add(carId, userId, type, duration, fields);
+        return await this.storage.add(
+            carId,
+            userId,
+            type,
+            duration,
+            fields,
+        );
     }
 
     /**
