@@ -16,6 +16,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 import { profile, ILogger } from '@imqueue/rpc';
+import * as moment from 'moment';
 import { createHandyClient, IHandyRedis } from 'handy-redis';
 import { Sequelize } from 'sequelize-typescript';
 import { initModels, Reservation } from '../orm';
@@ -75,6 +76,7 @@ export class BackStorage {
             userId,
             type,
             duration,
+            reserveDate: moment(duration[0]).format('YYYY-MM-DD'),
         } as Reservation);
 
         await reservation.save();

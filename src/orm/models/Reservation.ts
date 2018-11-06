@@ -28,7 +28,8 @@ import {
     CreatedAt,
     UpdatedAt,
     DeletedAt,
-    AllowNull
+    AllowNull,
+    Default,
 } from 'sequelize-typescript';
 import { property } from '@imqueue/rpc';
 import { BaseModel } from '..';
@@ -60,6 +61,11 @@ export class Reservation extends BaseModel<Reservation> {
     @AllowNull(false)
     @Column(DataType.RANGE(DataType.DATE))
     public duration: [Date, Date];
+
+    @Default(DataType.NOW)
+    @AllowNull(false)
+    @Column(DataType.DATEONLY)
+    public reserveDate: string;
 
     @CreatedAt
     public createdAt: Date;
