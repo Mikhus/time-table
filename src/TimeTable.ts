@@ -75,9 +75,9 @@ export class TimeTable extends IMQService {
      * Makes a given reservation or throws a proper error
      * if action is not possible
      *
-     * @param {Reservation} reservation
-     * @param {string[]} [fields]
-     * @return {Promise<Reservation[]>}
+     * @param {Reservation} reservation - reservation data structure
+     * @param {string[]} [fields] - fields to select for updated reservations list
+     * @return {Promise<Reservation[]>} - updated reservations list
      */
     @profile()
     @expose()
@@ -103,32 +103,14 @@ export class TimeTable extends IMQService {
     /**
      * Cancels reservation at a given time
      *
-     * @param {string} reservationTime
-     * @return {Promise<boolean>}
+     * @param {string} id - reservation identifier
+     * @param {string[]} [fields] - fields to select for updated reservations list
+     * @return {Promise<Reservation[]>} - updated reservations list
      */
     @profile()
     @expose()
-    public async cancel(reservationTime: string): Promise<boolean> {
-        // TODO: implement
-        return true;
-    }
-
-    /**
-     * Returns closes possible reservation for a selected washing type
-     * and a given startTime
-     *
-     * @param {string} washingType
-     * @param {string} startFrom
-     * @return {Promise<Reservation | null>}
-     */
-    @profile()
-    @expose()
-    public async closest(
-        washingType: string,
-        startFrom: string
-    ): Promise<Reservation|null> {
-        // TODO: implement
-        return null;
+    public async cancel(id: string, fields?: string[]): Promise<Reservation[]> {
+        return await this.storage.remove(id, fields);
     }
 
     /**

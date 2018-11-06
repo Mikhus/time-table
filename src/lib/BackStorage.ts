@@ -94,7 +94,15 @@ export class BackStorage {
     }
 
     @profile()
-    public async cancel() {
+    public async remove(id: string, fields?: string[]) {
+        const reservation = await this.findById(id);
 
+        if (!reservation) {
+            throw new Error('No such reservation found!');
+        }
+
+        await Reservation.destroy({ where: { id } });
+
+        return this.list(new Date(reservation.duration[0]), fields);
     }
 }
