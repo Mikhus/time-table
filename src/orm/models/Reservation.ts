@@ -62,11 +62,6 @@ export class Reservation extends BaseModel<Reservation> {
     @Column(DataType.RANGE(DataType.DATE))
     public duration: [Date, Date];
 
-    @Default(DataType.NOW)
-    @AllowNull(false)
-    @Column(DataType.DATEONLY)
-    public reserveDate: string;
-
     @CreatedAt
     public createdAt: Date;
 

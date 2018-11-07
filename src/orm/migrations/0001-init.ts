@@ -16,7 +16,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 import { QueryInterface } from 'sequelize';
-import { initModels, Reservation } from '..';
+import { initModels } from '..';
 
 /**
  * Initial database setup - creates all initial tables and indexes
@@ -32,14 +32,23 @@ export async function up(migration: QueryInterface) {
     db.define('Reservation', {}, {
         indexes: [
             { fields: ['duration'], using: 'gist' },
-            { fields: ['reserveDate'] },
         ],
         freezeTableName: true,
         tableName: 'Reservation',
     });
-    await migration.sequelize.query(`CREATE UNIQUE INDEX
-        car_duplicate_idx ON "${Reservation.name}"
-        ("carId", "reserveDate", COALESCE("deletedAt", '1970-01-01'))`
+    await migration.sequelize.query(
+        `CREATE OR REPLACE FUNCTION range_date(TSTZRANGE) RETURNS DATE
+            AS 'SELECT CAST(LOWER($1) AS DATE)'
+        LANGUAGE SQL
+        IMMUTABLE
+        RETURNS NULL ON NULL INPUT`
+    );
+    await migration.sequelize.query(
+        `CREATE UNIQUE INDEX car_duplicate_idx ON "Reservation" (
+            "carId",
+            range_date("duration"),
+            COALESCE("deletedAt", '1970-01-01')
+        )`
     );
     await db.sync();
 }
@@ -52,5 +61,6 @@ export async function up(migration: QueryInterface) {
  */
 export async function down(migration: QueryInterface) {
     await migration.dropAllTables();
+    await migration.sequelize.query(`DROP FUNCTION IF EXISTS "range_date"`);
     console.log('Everything dropped!');
 }
