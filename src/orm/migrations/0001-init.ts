@@ -31,15 +31,16 @@ export async function up(migration: QueryInterface) {
     await db.sync();
     db.define('Reservation', {}, {
         indexes: [
-            { fields: ['carId', 'userId'] },
             { fields: ['duration'], using: 'gist' },
-            { fields: ['createdAt'] },
-            { fields: ['updatedAt'] },
-            { fields: ['deletedAt'] },
+            { fields: ['reserveDate'] }
         ],
         freezeTableName: true,
         tableName: 'Reservation',
     });
+    await migration.sequelize.query(`CREATE UNIQUE INDEX
+        car_duplicate_idx ON "${Reservation.name}"
+        ("carId", "reserveDate", COALESCE("deletedAt", '1970-01-01'))`
+    );
     await db.sync();
 }
 
