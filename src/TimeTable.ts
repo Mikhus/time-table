@@ -101,9 +101,12 @@ export class TimeTable extends IMQService {
         ];
 
         try {
-            const reservation = new Reservation(
-                { carId, userId, type, duration } as Reservation
-            );
+            const reservation = new Reservation({
+                carId,
+                userId,
+                type,
+                duration,
+            } as Reservation);
 
             await reservation.save();
 

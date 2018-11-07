@@ -29,7 +29,6 @@ import {
     UpdatedAt,
     DeletedAt,
     AllowNull,
-    Default,
 } from 'sequelize-typescript';
 import { property } from '@imqueue/rpc';
 import { BaseModel } from '..';
